@@ -1,0 +1,1 @@
+Generated configuration files for ospf role will be located under this directory.
