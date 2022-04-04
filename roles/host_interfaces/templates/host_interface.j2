@@ -1,0 +1,38 @@
+<config>
+    <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+        <intf-items>
+            <aggr-items>
+                <AggrIf-list>
+                    <id>po{{item.port_channel_id}}</id>
+                    <isExplicit>true</isExplicit>
+                    <pcMode>active</pcMode>
+                    <mode>trunk</mode>
+                    <layer>Layer2</layer>
+                    <adminSt>up</adminSt>
+                    <rsmbrIfs-items>
+                        <RsMbrIfs-list>
+                            <tDn>/System/intf-items/phys-items/PhysIf-list[id=&apos;{{item.interface}}&apos;]</tDn>
+                            <isMbrForce>true</isMbrForce>
+                        </RsMbrIfs-list>
+                    </rsmbrIfs-items>
+                    <userCfgdFlags>admin_layer</userCfgdFlags>
+                </AggrIf-list>
+            </aggr-items>
+        </intf-items>
+        <vpc-items>
+            <inst-items>
+                <dom-items>
+                    <id>{{vpc.domain}}</id>
+                    <if-items>
+                        <If-list>
+                            <id>{{item.port_channel_id}}</id>
+                            <rsvpcConf-items>
+                                <tDn>/System/intf-items/aggr-items/AggrIf-list[id=&apos;po{{item.port_channel_id}}&apos;]</tDn>
+                            </rsvpcConf-items>
+                        </If-list>
+                    </if-items>
+                </dom-items>
+            </inst-items>
+        </vpc-items>
+    </System>
+</config>

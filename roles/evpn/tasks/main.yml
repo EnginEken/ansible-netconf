@@ -1,0 +1,11 @@
+---
+- name: Generate EVPN Config
+  template:
+    src: "../templates/evpn.j2"
+    dest: "./roles/evpn/files/{{inventory_hostname}}-evpn.xml"
+
+- name: Configure EVPN
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/evpn/files/{{inventory_hostname}}-evpn.xml') }}"

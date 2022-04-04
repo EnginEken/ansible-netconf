@@ -1,0 +1,44 @@
+---
+- name: Generate VRF Config for vPC
+  template:
+    src: "../templates/vrf.j2"
+    dest: "./roles/vpc/files/{{inventory_hostname}}-vpc-vrf.xml"
+
+- name: Configure VRF Config for vPC
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/vpc/files/{{inventory_hostname}}-vpc-vrf.xml') }}"
+
+- name: Generate PKL Config for vPC
+  template:
+    src: "../templates/pkl.j2"
+    dest: "./roles/vpc/files/{{inventory_hostname}}-vpc-pkl.xml"
+
+- name: Configure PKL for vPC
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/vpc/files/{{inventory_hostname}}-vpc-pkl.xml') }}"
+
+- name: Generate vPC Domain Config
+  template:
+    src: "../templates/vpc_domain.j2"
+    dest: "./roles/vpc/files/{{inventory_hostname}}-vpc-domain.xml"
+
+- name: Configure vPC Domain
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/vpc/files/{{inventory_hostname}}-vpc-domain.xml') }}"
+
+- name: Generate vPC PeerLinks Config
+  template:
+    src: "../templates/peer_links.j2"
+    dest: "./roles/vpc/files/{{inventory_hostname}}-vpc-peerlinks.xml"
+
+- name: Configure vPC PeerLinks
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/vpc/files/{{inventory_hostname}}-vpc-peerlinks.xml') }}"

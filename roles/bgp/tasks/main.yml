@@ -1,0 +1,24 @@
+---
+- name: "Generate BGP Config for Default VRF"
+  template:
+    src: "../templates/bgp_default.j2"
+    dest: "./roles/bgp/files/{{inventory_hostname}}-bgp_default.xml"
+
+- name: Configure BGP for Default VRF
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/bgp/files/{{inventory_hostname}}-bgp_default.xml') }}"
+
+- name: "Generate BGP Config for Customer VRF"
+  template:
+    src: "../templates/bgp_customer.j2"
+    dest: "./roles/bgp/files/{{inventory_hostname}}-bgp_customer.xml"
+  when: group_names[0] == 'leafs'
+
+- name: Configure BGP for Customer VRF
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/bgp/files/{{inventory_hostname}}-bgp_customer.xml') }}"
+  when: group_names[0] == 'leafs'

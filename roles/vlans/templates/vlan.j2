@@ -1,0 +1,13 @@
+<config>
+  <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+    <bd-items>
+      <bd-items>
+        <BD-list>
+          <fabEncap>vlan-{{item.id}}</fabEncap>
+          <accEncap>vxlan-{{item.vn_segment}}</accEncap>
+          <name>{{item.name}}</name>
+        </BD-list>
+      </bd-items>
+    </bd-items>
+  </System>
+</config>

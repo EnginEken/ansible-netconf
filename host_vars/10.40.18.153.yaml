@@ -1,0 +1,72 @@
+l3_interfaces:
+  - interface_type: eth
+    interface_id: 1/1
+    description: L3 Link to Spine-01
+    ip_address: 10.1.3.2
+    subnet_mask: 24
+  - interface_type: lo
+    interface_id: 0
+    description: loopback
+    ip_address: 10.10.10.103
+    secondary_ip_address: 10.10.10.134
+    subnet_mask: 32
+
+vlans:
+  - id: 10
+    name: Customer-10-vlan
+    vn_segment: 10010
+    type: customer
+  - id: 20
+    name: Customer-20-vlan
+    vn_segment: 10020
+    type: customer
+  - id: 100
+    name: Customer-10-L3vni
+    vn_segment: 100100
+    type: l3vni
+  - id: 200
+    name: Customer-20-L3vni
+    vn_segment: 100200
+    type: l3vni
+
+vlan_interfaces:
+  - interface_type: vlan
+    interface_id: 10
+    ip_address: 10.1.10.1
+    network_address: 10.1.10.0
+    subnet_mask: 24
+    type: customer
+    vrf: Customer-10-vrf
+  - interface_type: vlan
+    interface_id: 20
+    ip_address: 10.1.20.1
+    network_address: 10.1.20.0
+    subnet_mask: 24
+    type: customer
+    vrf: Customer-20-vrf
+  - interface_type: vlan
+    interface_id: 100
+    type: l3vni
+    vrf: Customer-10-vrf
+  - interface_type: vlan
+    interface_id: 200
+    type: l3vni
+    vrf: Customer-20-vrf
+
+vrfs:
+  - name: Customer-10-vrf
+    vni: 100100
+  - name: Customer-20-vrf
+    vni: 100200
+
+vpc:
+  domain: 2
+  pkl_vrf: vpc
+  pkl_interface: eth1/5
+  vpc_pkl_src: 192.168.2.1
+  vpc_pkl_dest: 192.168.2.2
+  vpc_pkl_subnet_mask: 24
+  peer_port_channel: po1
+  peer_links:
+    - eth1/6
+    - eth1/7

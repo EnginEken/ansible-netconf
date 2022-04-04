@@ -1,0 +1,11 @@
+---
+- name: "Generate Feature Config"
+  template:
+    src: "../templates/features.j2"
+    dest: "./roles/features/files/features-{{group_names.0}}.xml"
+
+- name: Enable Features
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/features/files/features-{{group_names.0}}.xml') }}"

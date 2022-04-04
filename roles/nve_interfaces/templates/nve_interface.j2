@@ -1,0 +1,34 @@
+<config>
+    <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+        <eps-items>
+            <epId-items>
+                <Ep-list>
+                    <epId>1</epId>
+                    <adminSt>enabled</adminSt>
+                    <hostReach>bgp</hostReach>
+                    <nws-items>
+                        <vni-items>
+                            {% for item in vlans %}
+                                {% if item.type == 'l3vni' %}
+                                    <Nw-list>
+                                        <vni>{{item.vn_segment}}</vni>
+                                        <associateVrfFlag>true</associateVrfFlag>
+                                    </Nw-list>
+                                {% elif item.type == 'customer' %}
+                                    <Nw-list>
+                                        <vni>{{item.vn_segment}}</vni>
+                                        <IngRepl-items>
+                                            <proto>bgp</proto>
+                                        </IngRepl-items>
+                                        <suppressARP>enabled</suppressARP>
+                                    </Nw-list>
+                                {% endif %}
+                            {% endfor %}
+                        </vni-items>
+                    </nws-items>
+                    <sourceInterface>lo0</sourceInterface>
+                </Ep-list>
+            </epId-items>
+        </eps-items>
+    </System>
+</config>

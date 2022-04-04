@@ -1,0 +1,13 @@
+---
+- name: Generate Host Interfaces Config
+  loop: "{{host_interfaces}}"
+  template:
+    src: "../templates/host_interface.j2"
+    dest: "./roles/host_interfaces/files/{{inventory_hostname}}-po{{item.port_channel_id}}.xml"
+
+- name: Configure Host Interfaces
+  loop: "{{host_interfaces}}"
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/host_interfaces/files/{{inventory_hostname}}-po{{item.port_channel_id}}.xml') }}"

@@ -1,0 +1,26 @@
+<config>
+<System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+    <ospf-items>
+        <inst-items>
+            <Inst-list>
+                <name>{{ospf.process_id}}</name>
+                <dom-items>
+                    <Dom-list>
+                        <name>default</name>
+                        <if-items>
+                            {% for interface in l3_interfaces %}
+                            <If-list>
+                                <id>{{interface.interface_type}}{{interface.interface_id}}</id>
+                                <adminSt>enabled</adminSt>
+                                <area>{{ospf.area}}</area>
+                                <nwT>p2p</nwT>
+                            </If-list>
+                            {% endfor %}
+                        </if-items>
+                    </Dom-list>
+                </dom-items>
+            </Inst-list>
+        </inst-items>
+    </ospf-items>
+</System>
+</config>

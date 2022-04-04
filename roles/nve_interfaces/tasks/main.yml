@@ -1,0 +1,11 @@
+---
+- name: "Generate NVE Interface Config"
+  template:
+    src: "../templates/nve_interface.j2"
+    dest: "./roles/nve_interfaces/files/{{inventory_hostname}}-nve.xml"
+
+- name: Configure NVE Interface
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/nve_interfaces/files/{{inventory_hostname}}-nve.xml') }}"

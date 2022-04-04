@@ -1,0 +1,23 @@
+<config>
+	<System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+        <vpc-items>
+            <adminSt>enabled</adminSt>
+            <inst-items>
+                <adminSt>enabled</adminSt>
+                <dom-items>
+                    <adminSt>enabled</adminSt>
+                    <id>{{vpc.domain}}</id>
+                    <keepalive-items>
+                        <destIp>{{vpc.vpc_pkl_dest}}</destIp>
+                        <srcIp>{{vpc.vpc_pkl_src}}</srcIp>
+                        <vrf>vpc</vrf>
+                        <peerlink-items>
+                            <adminSt>enabled</adminSt>
+                            <id>po1</id>
+                        </peerlink-items>
+                    </keepalive-items>
+                </dom-items>
+            </inst-items>
+        </vpc-items>
+	</System>
+</config>

@@ -1,0 +1,26 @@
+---
+
+- name: Configure Spines
+  hosts: spines
+  gather_facts: false
+  roles:
+    - features
+    - l3_interfaces
+    - ospf
+    - bgp
+
+- name: Configure Leafs
+  hosts: leafs
+  gather_facts: false
+  roles:
+    - features
+    - l3_interfaces
+    - ospf
+    - vlans
+    - vrfs
+    - vlan_interfaces
+    - nve_interfaces
+    - bgp
+    - evpn
+    - vpc
+    - host_interfaces

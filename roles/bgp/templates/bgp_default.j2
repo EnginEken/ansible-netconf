@@ -1,0 +1,60 @@
+<config>
+<System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+    <bgp-items>
+        <inst-items>
+            <asn>{{bgp.asn}}</asn>
+            <dom-items>
+                <Dom-list>
+                    <name>default</name>
+                    {% if 'spines' in group_names %}
+                        <af-items>
+                            <DomAf-list>
+                                <type>l2vpn-evpn</type>
+                                <clReflection>enabled</clReflection>
+                            </DomAf-list>
+                        </af-items>
+                        <peer-items>
+                        {% for peer in bgp.peers %}
+                            <Peer-list>
+                                <addr>{{peer.ip_address}}</addr>
+                                <adminSt>enabled</adminSt>
+                                <af-items>
+                                    <PeerAf-list>
+                                        <type>l2vpn-evpn</type>
+                                        <ctrl>rr-client</ctrl>
+                                        <advGwIp>enabled</advGwIp>
+                                        <sendComExt>enabled</sendComExt>
+                                        <sendComStd>enabled</sendComStd>
+                                    </PeerAf-list>
+                                </af-items>
+                                <asn>{{bgp.asn}}</asn>
+                                <srcIf>lo0</srcIf>
+                            </Peer-list>
+                        {% endfor %}
+                        </peer-items>
+                    {% else %}
+                        <peer-items>
+		                {% for peer in bgp.peers %}
+		                    <Peer-list>
+		                        <addr>{{peer.ip_address}}</addr>
+		                        <adminSt>enabled</adminSt>
+		                        <af-items>
+		                            <PeerAf-list>
+		                                <type>l2vpn-evpn</type>
+		                                <advGwIp>enabled</advGwIp>
+		                                <sendComExt>enabled</sendComExt>
+		                                <sendComStd>enabled</sendComStd>
+		                            </PeerAf-list>
+		                        </af-items>
+		                        <asn>{{bgp.asn}}</asn>
+		                        <srcIf>lo0</srcIf>
+		                    </Peer-list>
+		                {% endfor %}
+		                </peer-items>
+                    {% endif %}
+                </Dom-list>
+            </dom-items>
+        </inst-items>
+    </bgp-items>
+</System>
+</config>

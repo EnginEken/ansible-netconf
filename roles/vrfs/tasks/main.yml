@@ -1,0 +1,13 @@
+---
+- name: "Generate VRF Config"
+  loop: "{{vrfs}}"
+  template:
+    src: "../templates/vrf.j2"
+    dest: "./roles/vrfs/files/{{inventory_hostname}}-{{item.name}}.xml"
+
+- name: Configure VRFs
+  loop: "{{vrfs}}"
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/vrfs/files/{{inventory_hostname}}-{{item.name}}.xml') }}"

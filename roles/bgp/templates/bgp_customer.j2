@@ -1,0 +1,28 @@
+<config>
+    <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+        <bgp-items>
+            <inst-items>
+                <asn>{{bgp.asn}}</asn>
+                <dom-items>
+                {% for interface in vlan_interfaces %}
+                    {% if interface.type == 'customer' %}
+                    <Dom-list>
+                        <name>{{interface.vrf}}</name>
+                        <af-items>
+                            <DomAf-list>
+                                <type>ipv4-ucast</type>
+                                <prefix-items>
+                                    <AdvPrefix-list>
+                                        <addr>{{interface.network_address}}/{{interface.subnet_mask}}</addr>
+                                    </AdvPrefix-list>
+                                </prefix-items>
+                            </DomAf-list>
+                        </af-items>
+                    </Dom-list>
+                    {% endif %}
+                {% endfor %}
+                </dom-items>
+            </inst-items>
+        </bgp-items>
+    </System>
+</config>

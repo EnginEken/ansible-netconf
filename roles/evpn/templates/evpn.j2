@@ -1,0 +1,34 @@
+<config>
+    <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+        <evpn-items>
+            <bdevi-items>
+                {% for vlan in vlans %}
+                    {% if vlan.type == 'customer' %}
+                        <BDEvi-list>
+                            <encap>vxlan-{{vlan.vn_segment}}</encap>
+                            <rd>rd:unknown:0:0</rd>
+                            <rttp-items>
+                                <RttP-list>
+                                    <type>export</type>
+                                    <ent-items>
+                                        <RttEntry-list>
+                                            <rtt>route-target:unknown:0:0</rtt>
+                                        </RttEntry-list>
+                                    </ent-items>
+                                </RttP-list>
+                                <RttP-list>
+                                    <type>import</type>
+                                    <ent-items>
+                                        <RttEntry-list>
+                                            <rtt>route-target:unknown:0:0</rtt>
+                                        </RttEntry-list>
+                                    </ent-items>
+                                </RttP-list>
+                            </rttp-items>
+                        </BDEvi-list>
+                    {% endif %}
+                {% endfor %}
+            </bdevi-items>
+        </evpn-items>
+    </System>
+</config>

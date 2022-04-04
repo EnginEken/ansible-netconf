@@ -1,0 +1,39 @@
+<config>
+<System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+    <intf-items>
+        <phys-items>
+            <PhysIf-list>
+                <id>{{vpc.pkl_interface}}</id>
+                <descr>vPC PKL Interface</descr>
+                <layer>Layer3</layer>
+                <adminSt>up</adminSt>
+                <userCfgdFlags>admin_layer,admin_state</userCfgdFlags>
+                <rtvrfMbr-items>
+                    <tDn>/System/inst-items/Inst-list[mode=&apos;{{vpc.pkl_vrf}}&apos;]</tDn>
+                </rtvrfMbr-items>
+            </PhysIf-list>
+        </phys-items>
+    </intf-items>
+    <ipv4-items>
+        <inst-items>
+            <adminSt>enabled</adminSt>
+            <dom-items>
+                <Dom-list>
+                    <name>{{vpc.pkl_vrf}}</name>
+                    <if-items>
+                        <If-list>
+                            <id>{{vpc.pkl_interface}}</id>
+                            <addr-items>
+                                <Addr-list>
+                                    <addr>{{vpc.vpc_pkl_src}}/{{vpc.vpc_pkl_subnet_mask}}</addr>
+                                    <type>primary</type>
+                                </Addr-list>
+                            </addr-items>
+                        </If-list>
+                    </if-items>
+                </Dom-list>
+            </dom-items>
+        </inst-items>
+    </ipv4-items>
+</System>
+</config>

@@ -1,0 +1,7 @@
+ansible_connection: ansible.netcommon.netconf
+ansible_network_os: nxos
+ansible_user: admin
+ansible_ssh_pass: admin
+ospf:
+  process_id: 1
+  area: 0.0.0.0

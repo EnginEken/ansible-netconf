@@ -1,0 +1,11 @@
+---
+- name: "Generate OSPF config"
+  template:
+    src: "../templates/ospf.j2"
+    dest: "./roles/ospf/files/{{inventory_hostname}}-ospf.xml"
+
+- name: Configure OSPF
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/ospf/files/{{inventory_hostname}}-ospf.xml') }}"

@@ -1,0 +1,26 @@
+l3_interfaces:
+  - interface_type: eth
+    interface_id: 1/1
+    description: L3 Link to Leaf-01
+    ip_address: 10.1.1.1
+    subnet_mask: 24
+  - interface_type: eth
+    interface_id: 1/2
+    description: L3 Link to Leaf-02
+    ip_address: 10.1.2.1
+    subnet_mask: 24
+  - interface_type: eth
+    interface_id: 1/3
+    description: L3 Link to Leaf-03
+    ip_address: 10.1.3.1
+    subnet_mask: 24
+  - interface_type: eth
+    interface_id: 1/4
+    description: L3 Link to Leaf-04
+    ip_address: 10.1.4.1
+    subnet_mask: 24
+  - interface_type: lo
+    interface_id: 0
+    description: loopback
+    ip_address: 10.10.10.1
+    subnet_mask: 32

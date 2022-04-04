@@ -1,0 +1,52 @@
+<config>
+<System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+    <intf-items>
+    {% if item.interface_type == "lo" %}
+        <lb-items>
+            <LbRtdIf-list>
+                <id>{{item.interface_type}}{{item.interface_id}}</id>
+                <descr>{{item.description}}</descr>
+                <adminSt>up</adminSt>
+            </LbRtdIf-list>
+        </lb-items>
+    {% else %}
+        <phys-items>
+            <PhysIf-list>
+                <id>{{item.interface_type}}{{item.interface_id}}</id>
+                <descr>{{item.description}}</descr>
+                <layer>Layer3</layer>
+                <adminSt>up</adminSt>
+                <userCfgdFlags>admin_layer,admin_state</userCfgdFlags>
+            </PhysIf-list>
+        </phys-items>
+    {% endif %}
+    </intf-items>
+    <ipv4-items>
+        <inst-items>
+            <adminSt>enabled</adminSt>
+            <dom-items>
+                <Dom-list>
+                    <name>default</name>
+                    <if-items>
+                        <If-list>
+                            <id>{{item.interface_type}}{{item.interface_id}}</id>
+                            <addr-items>
+                                <Addr-list>
+                                    <addr>{{item.ip_address}}/{{item.subnet_mask}}</addr>
+                                    <type>primary</type>
+                                </Addr-list>
+                                {% if 'secondary_ip_address' in item %}
+                                <Addr-list>
+                                    <addr>{{item.secondary_ip_address}}/{{item.subnet_mask}}</addr>
+                                    <type>secondary</type>
+                                </Addr-list>
+                                {% endif %}
+                            </addr-items>
+                        </If-list>
+                    </if-items>
+                </Dom-list>
+            </dom-items>
+        </inst-items>
+    </ipv4-items>
+</System>
+</config>

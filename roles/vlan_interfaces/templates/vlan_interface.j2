@@ -1,0 +1,59 @@
+<config>
+    <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+        <intf-items>
+            <svi-items>
+                <If-list>
+                    <id>{{item.interface_type}}{{item.interface_id}}</id>
+                    <adminSt>up</adminSt>
+                    <vlanId>{{item.interface_id}}</vlanId>
+                    <rtvrfMbr-items>
+                        <tDn>/System/inst-items/Inst-list[mode=&apos;{{item.vrf}}&apos;]</tDn>
+                    </rtvrfMbr-items>
+                </If-list>
+            </svi-items>
+        </intf-items>
+        <ipv4-items>
+            <adminSt>enabled</adminSt>
+            <inst-items>
+                <adminSt>enabled</adminSt>
+                <dom-items>
+                    <Dom-list>
+                        <name>{{item.vrf}}</name>
+                        <if-items>
+                            {% if item.type == 'customer' %}
+                                <If-list>
+                                    <id>{{item.interface_type}}{{item.interface_id}}</id>
+                                    <addr-items>
+                                        <Addr-list>
+                                            <addr>{{item.ip_address}}/{{item.subnet_mask}}</addr>
+                                            <type>primary</type>
+                                        </Addr-list>
+                                    </addr-items>
+                                </If-list>
+                            {% elif item.type == 'l3vni' %}
+                                <If-list>
+                                    <id>{{item.interface_type}}{{item.interface_id}}</id>
+                                    <forward>enabled</forward>
+                                </If-list>
+                            {% endif %}
+                        </if-items>
+                    </Dom-list>
+                </dom-items>
+            </inst-items>
+        </ipv4-items>
+        {% if item.type == 'customer' %}
+            <hmm-items>
+                <fwdinst-items>
+                    <amac>00:01:00:01:00:01</amac>
+                    <if-items>
+                        <FwdIf-list>
+                            <id>{{item.interface_type}}{{item.interface_id}}</id>
+                            <adminSt>enabled</adminSt>
+                            <mode>anycastGW</mode>
+                        </FwdIf-list>
+                    </if-items>
+                </fwdinst-items>
+            </hmm-items>
+        {% endif %}
+    </System>
+</config>

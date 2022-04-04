@@ -1,0 +1,13 @@
+---
+- name: "Generate Interface config"
+  loop: "{{l3_interfaces}}"
+  template:
+    src: "../templates/l3_interfaces.j2"
+    dest: "./roles/l3_interfaces/files/{{inventory_hostname}}-{{item.interface_type}}-{{item.ip_address}}.xml"
+
+- name: Configure Interfaces
+  loop: "{{l3_interfaces}}"
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/l3_interfaces/files/{{inventory_hostname}}-{{item.interface_type}}-{{item.ip_address}}.xml') }}"

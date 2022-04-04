@@ -1,0 +1,7 @@
+bgp:
+  asn: 65001
+  peers:
+    - ip_address: 10.10.10.101
+    - ip_address: 10.10.10.102
+    - ip_address: 10.10.10.103
+    - ip_address: 10.10.10.104

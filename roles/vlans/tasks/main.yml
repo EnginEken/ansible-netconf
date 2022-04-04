@@ -1,0 +1,13 @@
+---
+- name: "Generate Vlan Config"
+  loop: "{{vlans}}"
+  template:
+    src: "../templates/vlan.j2"
+    dest: "./roles/vlans/files/{{inventory_hostname}}-vlan{{item.id}}.xml"
+
+- name: Configure Vlans
+  loop: "{{vlans}}"
+  netconf_config:
+    datastore: running
+    get_filter: <System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device"></System>
+    content: "{{ lookup('file', './roles/vlans/files/{{inventory_hostname}}-vlan{{item.id}}.xml') }}"
